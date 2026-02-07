@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initEventListeners();
     initDashboard();
-    
+     
     // Start time updates
     updateTime();
     setInterval(updateTime, 1000);
