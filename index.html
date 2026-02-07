@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield - Security Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Initializing Security Systems...</p>
+    </div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <h2>CyberShield</h2>
+        </div>
+        
+        <div class="nav-links">
+            <a href="#" class="nav-link active" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="#" class="nav-link" data-page="scanner">
+                <i class="fas fa-search"></i> Scanner
+            </a>
+            <a href="#" class="nav-link" data-page="password">
+                <i class="fas fa-key"></i> Password
+            </a>
+            <a href="#" class="nav-link" data-page="threats">
+                <i class="fas fa-radar"></i> Threats
+            </a>
+            <a href="#" class="nav-link" data-page="network">
+                <i class="fas fa-network-wired"></i> Network
+            </a>
+        </div>
+
+        <div class="user-info">
+            <div class="user-icon">
+                <i class="fas fa-user-secret"></i>
+            </div>
+            <div class="user-details">
+                <span class="username">Security Admin</span>
+                <span class="status active">System Active</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <h1 id="page-title">Security Dashboard</h1>
+            <div class="header-controls">
+                <div class="time" id="current-time">00:00:00</div>
+                <button class="btn-scan" id="quick-scan">
+                    <i class="fas fa-play"></i> Quick Scan
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="content">
+            <!-- Dashboard Page -->
+            <section id="dashboard" class="page active">
+                <div class="metrics-grid">
+                    <div class="metric-card critical">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Critical Threats</h3>
+                        <div class="metric-value" id="critical-count">3</div>
+                        <p>Active threats detected</p>
+                    </div>
+                    
+                    <div class="metric-card safe">
+                        <h3><i class="fas fa-shield-alt"></i> Protected Systems</h3>
+                        <div class="metric-value" id="protected-count">24/26</div>
+                        <p>Systems secured</p>
+                    </div>
+                    
+                    <div class="metric-card warning">
+                        <h3><i class="fas fa-clock"></i> Last Scan</h3>
+                        <div class="metric-value" id="last-scan">2h ago</div>
+                        <p>No vulnerabilities found</p>
+                    </div>
+                    
+                    <div class="metric-card info">
+                        <h3><i class="fas fa-chart-line"></i> Network Traffic</h3>
+                        <div class="metric-value" id="traffic">1.2 GB</div>
+                        <p>Last 24 hours</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-row">
+                    <div class="card">
+                        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                        <div class="activity-list" id="activity-list">
+                            <!-- Activities will be added here -->
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i class="fas fa-globe-americas"></i> Threat Map</h3>
+                        <div class="threat-map" id="threat-map">
+                            <canvas id="threat-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="runScan()">
+                            <i class="fas fa-search"></i> Run Scan
+                        </button>
+                        <button class="action-btn" onclick="updateFirewall()">
+                            <i class="fas fa-fire"></i> Update Firewall
+                        </button>
+                        <button class="action-btn" onclick="generateReport()">
+                            <i class="fas fa-file-alt"></i> Generate Report
+                        </button>
+                        <button class="action-btn" onclick="backupSystem()">
+                            <i class="fas fa-save"></i> Backup System
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vulnerability Scanner Page -->
+            <section id="scanner" class="page">
+                <div class="scanner-container">
+                    <h2><i class="fas fa-search"></i> Vulnerability Scanner</h2>
+                    
+                    <div class="scanner-controls">
+                        <div class="input-group">
+                            <label>Target to Scan:</label>
+                            <input type="text" id="scan-target" placeholder="192.168.1.1 or example.com">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Scan Type:</label>
+                            <select id="scan-type">
+                                <option value="quick">Quick Scan</option>
+                                <option value="full">Full Scan</option>
+                                <option value="port">Port Scan</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn-primary" onclick="startScan()">
+                            <i class="fas fa-play-circle"></i> Start Security Scan
+                        </button>
+                    </div>
+                    
+                    <div class="scan-results">
+                        <h3>Scan Results</h3>
+                        <div class="results-summary">
+                            <span class="badge critical">Critical: <span id="crit-count">0</span></span>
+                            <span class="badge high">High: <span id="high-count">0</span></span>
+                            <span class="badge medium">Medium: <span id="med-count">0</span></span>
+                        </div>
+                        <div class="vulnerabilities" id="vulnerabilities">
+                            <!-- Vulnerabilities will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Password Analyzer Page -->
+            <section id="password" class="page">
+                <div class="password-container">
+                    <h2><i class="fas fa-key"></i> Password Analyzer</h2>
+                    
+                    <div class="password-tools">
+                        <div class="tool-card">
+                            <h3>Password Strength Checker</h3>
+                            <div class="input-with-button">
+                                <input type="password" id="password-input" placeholder="Enter password">
+                                <button class="btn-eye" onclick="togglePassword()">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="strength-meter">
+                                <div class="strength-bar">
+                                    <div class="strength-fill" id="strength-fill"></div>
+                                </div>
+                                <div class="strength-labels">
+                                    <span>Weak</span>
+                                    <span>Strong</span>
+                                </div>
+                            </div>
+                            
+                            <div class="strength-feedback" id="password-feedback">
+                                <!-- Feedback appears here -->
+                            </div>
+                        </div>
+                        
+                        <div class="tool-card">
+                            <h3>Password Generator</h3>
+                            <div class="generator-controls">
+                                <label>Length: <span id="length-value">16</span></label>
+                                <input type="range" id="length-slider" min="8" max="32" value="16">
+                                
+                                <div class="checkboxes">
+                                    <label><input type="checkbox" id="uppercase" checked> A-Z</label>
+                                    <label><input type="checkbox" id="lowercase" checked> a-z</label>
+                                    <label><input type="checkbox" id="numbers" checked> 0-9</label>
+                                    <label><input type="checkbox" id="symbols" checked> !@#$</label>
+                                </div>
+                                
+                                <div class="password-output">
+                                    <input type="text" id="generated-password" readonly>
+                                    <button class="btn-copy" onclick="copyPassword()">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                
+                                <button class="btn-generate" onclick="generatePassword()">
+                                    <i class="fas fa-bolt"></i> Generate Password
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Threat Detection Page -->
+            <section id="threats" class="page">
+                <div class="threats-container">
+                    <h2><i class="fas fa-radar"></i> Live Threat Detection</h2>
+                    
+                    <div class="threats-list" id="threats-list">
+                        <!-- Threats will be added here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Network Visualization Page -->
+            <section id="network" class="page">
+                <div class="network-container">
+                    <h2><i class="fas fa-network-wired"></i> Network Traffic</h2>
+                    
+                    <div class="network-visualization">
+                        <canvas id="network-canvas"></canvas>
+                    </div>
+                    
+                    <div class="network-stats">
+                        <div class="stat">
+                            <div class="stat-value" id="incoming-traffic">2.1 GB</div>
+                            <div class="stat-label">Incoming</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="outgoing-traffic">1.8 GB</div>
+                            <div class="stat-label">Outgoing</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="active-connections">24</div>
+                            <div class="stat-label">Connections</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="content.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
